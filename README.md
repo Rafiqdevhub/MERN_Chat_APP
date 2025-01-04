@@ -94,4 +94,4 @@ Contributions are welcome! Please follow these steps:
 
 For any questions or suggestions, feel free to contact me:
 
-- Email: rafkhan9323@gmail.com
+- Email: <rafkhan9323@gmail.com>
