@@ -1,8 +1,14 @@
+import axios from "axios";
+import Routes from "./pages/Route";
+import { UserContextProvider } from "./pages/UserContext";
+
 const App = () => {
+  axios.defaults.baseURL = "http://localhost:5000/api";
+  axios.defaults.withCredentials = true;
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <UserContextProvider>
+      <Routes />
+    </UserContextProvider>
   );
 };
 
