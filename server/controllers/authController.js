@@ -64,6 +64,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-const logoutUser = async (req, res) => {};
+const logoutUser = async (req, res) => {
+  res
+    .cookie("token", "", { sameSite: "none", secure: true })
+    .json("Logged out successfully");
+};
 
 export { registerUser, loginUser, logoutUser };
