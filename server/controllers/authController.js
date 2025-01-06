@@ -2,13 +2,13 @@ import { UserModel } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const jwtSecret = process.env.JWT_SECRET;
+const bcryptSalt = bcrypt.genSaltSync(10);
+
 const registerUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const jwtSecret = process.env.JWT_SECRET;
-    const bcryptSalt = bcrypt.genSaltSync(10);
-
     const existingUser = await UserModel.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -44,7 +44,25 @@ const registerUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  const foundUser = await UserModel.findOne({ username });
+  if (foundUser) {
+    const passOk = bcrypt.compareSync(password, foundUser.password);
+    if (passOk) {
+      jwt.sign(
+        { userId: foundUser._id, username },
+        jwtSecret,
+        {},
+        (err, token) => {
+          res.cookie("token", token, { sameSite: "none", secure: true }).json({
+            id: foundUser._id,
+          });
+        }
+      );
+    }
+  }
+};
 
 const logoutUser = async (req, res) => {};
 
